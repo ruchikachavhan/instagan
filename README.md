@@ -7,6 +7,11 @@ This is an implementation of [InstaGAN: Instance-aware Image-to-Image Translatio
 
 The following are results on the Clothing co-parsing (CCP) dataset. Due to limited GPU available, the network has been trained in suck a way that the binary mask of the other domain has been copied and then concatenated on the original image and then fed into the network. Therefore, the results is a black colored mask on the original image. Some of the masks colored have been manually changed when the background is dark.
 
+
+The datset is first separated into original images and masked images and then separated into domains. 
+
+
+
 # Pants/Jeans -> Skirt
 
 
