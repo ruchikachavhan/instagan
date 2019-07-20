@@ -24,7 +24,6 @@ Translated Image:
 
 
 
-
 2. Original Image:
 
 
@@ -41,12 +40,10 @@ Translated Image:
 
 
 
-
 3. Original Image:
 
 
 ![16_318_real](https://user-images.githubusercontent.com/32021556/61574558-0633d580-aadf-11e9-89cf-cc5c675c0981.png)
-
 
 
 
@@ -57,12 +54,10 @@ Translated Image:
 
 
 
-
 4. Original Image:
 
 
 ![16_309_real](https://user-images.githubusercontent.com/32021556/61574567-2368a400-aadf-11e9-9c49-aa3c44f29b45.png)
-
 
 
 
