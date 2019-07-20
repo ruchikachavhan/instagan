@@ -18,6 +18,8 @@ Pants/Jeans -> Skirt
 
 
 Translated Image:
+
+
 ![16_328_orig](https://user-images.githubusercontent.com/32021556/61574525-ab01e300-aade-11e9-97d2-4da6837b321e.png)
 
 
@@ -33,28 +35,39 @@ Translated Image:
 
 
 Translated Image:
+
+
 ![16_321_orig](https://user-images.githubusercontent.com/32021556/61574552-ebf9f780-aade-11e9-81ad-af02c4496fb3.png)
 
 
 
 
 3. Original Image:
+
+
 ![16_318_real](https://user-images.githubusercontent.com/32021556/61574558-0633d580-aadf-11e9-89cf-cc5c675c0981.png)
 
 
 
 
 Translated Image:
+
+
 ![16_318_orig](https://user-images.githubusercontent.com/32021556/61574563-1481f180-aadf-11e9-8863-170c2e284a09.png)
 
 
 
 
 4. Original Image:
+
+
 ![16_309_real](https://user-images.githubusercontent.com/32021556/61574567-2368a400-aadf-11e9-9c49-aa3c44f29b45.png)
 
 
 
 
 Translated Image:
+
+
+
 ![16_309_orig](https://user-images.githubusercontent.com/32021556/61574573-324f5680-aadf-11e9-808d-a3638c3ebe97.png)
