@@ -18,9 +18,8 @@ The following model has been trained and tested on the [Clothing co-parsing](htt
 
 
 
-![8_445_real](https://user-images.githubusercontent.com/32021556/61888033-6af89100-af20-11e9-9042-42197b494f00.png height="150" width="100")
-![8_445_orig](https://user-images.githubusercontent.com/32021556/61888067-7946ad00-af20-11e9-862f-06dc4cfbd126.png)
-
+![8_356_real](https://user-images.githubusercontent.com/32021556/61888779-c5462180-af21-11e9-8b41-56e80f105a18.png)
+![8_356_orig](https://user-images.githubusercontent.com/32021556/61888770-bfe8d700-af21-11e9-8f6e-e209d7258682.png)
 
 
 
