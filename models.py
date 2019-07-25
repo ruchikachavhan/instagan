@@ -18,8 +18,7 @@ import numpy as np
 class ResidualBlock(nn.Module):
   def __init__(self, in_features):
     super(ResidualBlock, self).__init__()
-
-    conv_block = [  nn.ReflectionPad2d(1),
+    conv_1 = [  nn.ReflectionPad2d(1),
                     nn.Conv2d(in_features, in_features, 3),
                     nn.InstanceNorm2d(in_features),
                     nn.ReLU(inplace=True),
@@ -27,10 +26,10 @@ class ResidualBlock(nn.Module):
                     nn.Conv2d(in_features, in_features, 3),
                     nn.InstanceNorm2d(in_features)  ]
 
-    self.conv_block = nn.Sequential(*conv_block)
+    self.conv_1 = nn.Sequential(*conv_1)
 
   def forward(self, x):
-    return x + self.conv_block(x)
+    return x + self.conv_1(x)
   
 class FeatureExtractor(nn.Module):
   def __init__(self, input_nc):
@@ -39,16 +38,13 @@ class FeatureExtractor(nn.Module):
                     nn.Conv2d(input_nc, 64, 7),
                     nn.InstanceNorm2d(64),
                     nn.ReLU(inplace=True) ]
-
-        # Downsampling
-    in_features = 64
-    out_features = in_features*2
-    for _ in range(2):
-        model += [  nn.Conv2d(in_features, out_features, 3, stride=2, padding=1),
+    #Downsampling block
+    model += [  nn.Conv2d(64, 128, 3, stride=2, padding=1),
                     nn.InstanceNorm2d(out_features),
                     nn.ReLU(inplace=True) ]
-        in_features = out_features
-        out_features = in_features*2
+    model += [  nn.Conv2d(128, 256, 3, stride=2, padding=1),
+                    nn.InstanceNorm2d(out_features),
+                    nn.ReLU(inplace=True) ]
 
     # Residual blocks
     for _ in range(6):
@@ -61,8 +57,6 @@ class FeatureExtractor(nn.Module):
 class FeatureGeneratorMask(nn.Module):
   def __init__(self):
     super(FeatureGeneratorMask, self).__init__()
-    in_features = 768
-    out_features = 128
     model = [  nn.ConvTranspose2d(768, 128, 3, stride=2, padding=1, output_padding=1),
                     nn.InstanceNorm2d(out_features),
                     nn.ReLU(inplace=True) ]
@@ -83,16 +77,12 @@ class FeatureGeneratorMask(nn.Module):
 class FeatureGenerator(nn.Module):
   def __init__(self):
     super(FeatureGenerator, self).__init__()
-    in_features = 512
-    out_features = 128
     model = [  nn.ConvTranspose2d(512, 128, 3, stride=2, padding=1, output_padding=1),
                     nn.InstanceNorm2d(out_features),
                     nn.ReLU(inplace=True) ]
     model += [  nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
                 nn.InstanceNorm2d(out_features),
                 nn.ReLU(inplace=True) ]
-
-
     # Output layer
     model += [  nn.ReflectionPad2d(3),
                 nn.Conv2d(64, 3, 7) ]
