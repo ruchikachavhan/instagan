@@ -6,7 +6,7 @@ This is an implementation of [InstaGAN: Instance-aware Image-to-Image Translatio
 
 
 
-The following model has been trained and tested on the [Clothing co-parsing](https://github.com/bearpaw/clothing-co-parsing) dataset. The model has been trained for two translations: Pants-> shorts and shorts->Pants and Pants->skirts and skirts->Pants. 
+The following model has been trained and tested on the [Clothing co-parsing](https://github.com/bearpaw/clothing-co-parsing) dataset. The model has been trained for two translations: Pants-> shorts/skirts and vice versa. 
 
 
 
