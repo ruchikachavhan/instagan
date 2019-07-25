@@ -16,71 +16,92 @@ import numpy as np
 
 
 class ResidualBlock(nn.Module):
-	def __init__(self):
-		super(ResidualBlock, self).__init__()
-		self.conv1 = nn.Conv2d(256, 256, kernel_size = 3, stride = 1, padding = 0)
-	def forward(self, x):
-		for i in range(0, 6):
-			x = self.conv1(self.conv1(x))
-		return x
+  def __init__(self, in_features):
+    super(ResidualBlock, self).__init__()
 
-class DBlock(nn.Module):
-	def __init__(self):
-		super(DBlock, self).__init__()
-		self.conv128 = nn.Conv2d(64, 128, kernel_size = 3, stride = 1, padding = 4)
-		self.conv256 = nn.Conv2d(128, 256, kernel_size = 3, stride= 1, padding = 4)
-		self.instnorm1 = nn.InstanceNorm2d(128)
-		self.instnorm2 = nn.InstanceNorm2d(256)
-	def forward(self, x):
-		conv_1 = F.relu(self.instnorm1(self.conv128(x)))
-		conv_2 = F.relu(self.instnorm2(self.conv256(conv_1)))
-		return conv_2
+    conv_block = [  nn.ReflectionPad2d(1),
+                    nn.Conv2d(in_features, in_features, 3),
+                    nn.InstanceNorm2d(in_features),
+                    nn.ReLU(inplace=True),
+                    nn.ReflectionPad2d(1),
+                    nn.Conv2d(in_features, in_features, 3),
+                    nn.InstanceNorm2d(in_features)  ]
 
-class UBlock(nn.Module):
-	def __init__(self, num_channels):
-		super(UBlock, self).__init__()
-		self.u128 = nn.ConvTranspose2d(num_channels, 128, kernel_size = 3, stride = 1, padding =0)
-		self.u64 = nn.ConvTranspose2d(128, 64, kernel_size = 3, stride = 1, padding =0)
-		self.instnorm1 = nn.InstanceNorm2d(128)
-		self.instnorm2 = nn.InstanceNorm2d(64)
-	def forward(self, x):
-		conv_1 = F.relu(self.instnorm1(self.u128(x)))
-		conv_2 = F.relu(self.instnorm2(self.u64(conv_1)))
-		return conv_2
-  
+    self.conv_block = nn.Sequential(*conv_block)
+
+  def forward(self, x):
+    return x + self.conv_block(x)
   
 class FeatureExtractor(nn.Module):
-  def __init__(self, num_channels):
+  def __init__(self, input_nc):
     super(FeatureExtractor, self).__init__()
-    self.conv7s1_64 = nn.Conv2d(num_channels, 64, kernel_size = 7, stride = 1,padding = 4)
-    self.R_Block = ResidualBlock()
-    self.D_Block = DBlock()
+    model = [   nn.ReflectionPad2d(3),
+                    nn.Conv2d(input_nc, 64, 7),
+                    nn.InstanceNorm2d(64),
+                    nn.ReLU(inplace=True) ]
+
+        # Downsampling
+    in_features = 64
+    out_features = in_features*2
+    for _ in range(2):
+        model += [  nn.Conv2d(in_features, out_features, 3, stride=2, padding=1),
+                    nn.InstanceNorm2d(out_features),
+                    nn.ReLU(inplace=True) ]
+        in_features = out_features
+        out_features = in_features*2
+
+    # Residual blocks
+    for _ in range(6):
+        model += [ResidualBlock(in_features)]
+    self.model = nn.Sequential(*model)
   def forward(self, x):
-    x = self.conv7s1_64(x)
-    x = self.D_Block.forward(x)
-    x = self.R_Block.forward(x)
-    return x 
+    return self.model(x) 
 
   
 class FeatureGeneratorMask(nn.Module):
   def __init__(self):
     super(FeatureGeneratorMask, self).__init__()
-    self.conv7s1_3 = nn.Conv2d(64, 1, kernel_size= 7, stride = 1, padding = 6)
-    self.U_block = UBlock(768)
+    in_features = 768
+    out_features = 128
+    model = [  nn.ConvTranspose2d(768, 128, 3, stride=2, padding=1, output_padding=1),
+                    nn.InstanceNorm2d(out_features),
+                    nn.ReLU(inplace=True) ]
+    model += [  nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
+                nn.InstanceNorm2d(out_features),
+                nn.ReLU(inplace=True) ]
+
+
+    # Output layer
+    model += [  nn.ReflectionPad2d(3),
+                nn.Conv2d(64, 1, 7) ]
+
+    self.model = nn.Sequential(*model)
+
   def forward(self, x):
-    x = self.U_block.forward(x)
-    x = F.relu(self.conv7s1_3(x))
-    return x
+      return self.model(x)
   
 class FeatureGenerator(nn.Module):
   def __init__(self):
     super(FeatureGenerator, self).__init__()
-    self.conv7s1_3 = nn.Conv2d(64, 3, kernel_size= 7, stride = 1, padding = 6)
-    self.U_block = UBlock(512)
+    in_features = 512
+    out_features = 128
+    model = [  nn.ConvTranspose2d(512, 128, 3, stride=2, padding=1, output_padding=1),
+                    nn.InstanceNorm2d(out_features),
+                    nn.ReLU(inplace=True) ]
+    model += [  nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
+                nn.InstanceNorm2d(out_features),
+                nn.ReLU(inplace=True) ]
+
+
+    # Output layer
+    model += [  nn.ReflectionPad2d(3),
+                nn.Conv2d(64, 3, 7) ]
+
+    self.model = nn.Sequential(*model)
+
   def forward(self, x):
-    x = self.U_block.forward(x)
-    x = F.relu(self.conv7s1_3(x))
-    return x
+      return self.model(x)
+
 
 class ResnetGenerator(nn.Module):
   def __init__(self):
