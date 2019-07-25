@@ -24,10 +24,8 @@ The images on the left are original images and the images on the right are trans
 
 
 
-
 ![8_370_real](https://user-images.githubusercontent.com/32021556/61888920-1524e880-af22-11e9-92b3-9494410f725b.png)
 ![8_370_orig](https://user-images.githubusercontent.com/32021556/61888906-0dfdda80-af22-11e9-83ea-7c2d3d6d8875.png)
-
 
 
 
@@ -38,12 +36,6 @@ The images on the left are original images and the images on the right are trans
 
 ![10_245_real](https://user-images.githubusercontent.com/32021556/61890286-c298fb80-af24-11e9-8f8f-453d85e6dfea.png)
 ![10_245_orig](https://user-images.githubusercontent.com/32021556/61890399-03911000-af25-11e9-8fbd-b5b414fccc40.png)
-
-
-
-
-![10_199_real](https://user-images.githubusercontent.com/32021556/61890289-c3319200-af24-11e9-84f1-b58355a21f09.png)
-![10_199_orig](https://user-images.githubusercontent.com/32021556/61890293-c593ec00-af24-11e9-8cdc-3378a1d0be29.png)
 
 
 
