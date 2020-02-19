@@ -7,7 +7,6 @@ import torchvision.datasets
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-import matplotlib.pyplot as plt
 from PIL import Image
 import os
 from itertools import zip_longest as zip
@@ -40,15 +39,15 @@ class FeatureExtractor(nn.Module):
                     nn.ReLU(inplace=True) ]
     #Downsampling block
     model += [  nn.Conv2d(64, 128, 3, stride=2, padding=1),
-                    nn.InstanceNorm2d(out_features),
+                    nn.InstanceNorm2d(128),
                     nn.ReLU(inplace=True) ]
     model += [  nn.Conv2d(128, 256, 3, stride=2, padding=1),
-                    nn.InstanceNorm2d(out_features),
+                    nn.InstanceNorm2d(256),
                     nn.ReLU(inplace=True) ]
 
     # Residual blocks
     for _ in range(6):
-        model += [ResidualBlock(in_features)]
+        model += [ResidualBlock(256)]
     self.model = nn.Sequential(*model)
   def forward(self, x):
     return self.model(x) 
@@ -58,10 +57,10 @@ class FeatureGeneratorMask(nn.Module):
   def __init__(self):
     super(FeatureGeneratorMask, self).__init__()
     model = [  nn.ConvTranspose2d(768, 128, 3, stride=2, padding=1, output_padding=1),
-                    nn.InstanceNorm2d(out_features),
+                    nn.InstanceNorm2d(128),
                     nn.ReLU(inplace=True) ]
     model += [  nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
-                nn.InstanceNorm2d(out_features),
+                nn.InstanceNorm2d(64),
                 nn.ReLU(inplace=True) ]
 
 
@@ -78,10 +77,10 @@ class FeatureGenerator(nn.Module):
   def __init__(self):
     super(FeatureGenerator, self).__init__()
     model = [  nn.ConvTranspose2d(512, 128, 3, stride=2, padding=1, output_padding=1),
-                    nn.InstanceNorm2d(out_features),
+                    nn.InstanceNorm2d(128),
                     nn.ReLU(inplace=True) ]
     model += [  nn.ConvTranspose2d(128, 64, 3, stride=2, padding=1, output_padding=1),
-                nn.InstanceNorm2d(out_features),
+                nn.InstanceNorm2d(64),
                 nn.ReLU(inplace=True) ]
     # Output layer
     model += [  nn.ReflectionPad2d(3),
